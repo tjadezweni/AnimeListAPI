@@ -52,11 +52,10 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity>
 
         if (orderBy is not null)
         {
-            return orderBy(query).AsNoTracking()
-                .ToList();
+            return await orderBy(query).AsNoTracking()
+                .ToListAsync();
         }
-        return query.AsNoTracking()
-            .ToList();
+        return await query.ToListAsync();
     }
 
     public async Task<TEntity?> GetByIdAsync(int id)

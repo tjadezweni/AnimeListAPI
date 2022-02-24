@@ -30,17 +30,17 @@ public class Series : BaseEntity
 
     public int GenreId { get; set; }
 
-    public Genre Genre { get; set; } = null!;
+    public Genre? Genre { get; set; } = null!;
 
     public int StudioId { get; set; }
 
-    public Studio Studio { get; set; } = null!;
+    public Studio? Studio { get; set; } = null!;
 
     public int LanguageId { get; set; }
 
-    public Language Language { get; set; } = null!;
+    public Language? Language { get; set; } = null!;
 
     public int CountryId { get; set; }
 
-    public Country Country { get; set; } = null!;
+    public Country? Country { get; set; } = null!;
 }

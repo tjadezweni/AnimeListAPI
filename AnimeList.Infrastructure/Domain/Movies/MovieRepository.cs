@@ -13,4 +13,5 @@ public class MovieRepository : GenericRepository<Movie>, IMovieRepository
 {
     public MovieRepository(AnimeListContext context)
         : base(context) { }
+
 }
