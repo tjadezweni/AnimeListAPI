@@ -23,7 +23,7 @@ public class StudioService : IStudioService
         var existingStudio = await unitOfWork.Studio.GetByIdAsync(newStudio.Id);
         if (existingStudio is not null)
         {
-            throw new Exception(ErrorMessages.IdFound(ModelType.Studio));
+            throw new ApiException(ErrorMessages.IdFound(ModelType.Studio));
         }
         var studio = new Studio()
         {

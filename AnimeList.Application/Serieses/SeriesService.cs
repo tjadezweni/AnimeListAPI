@@ -23,7 +23,7 @@ public class SeriesService : ISeriesService
         var existingSeries = await unitOfWork.Series.GetByIdAsync(newSeries.Id);
         if (existingSeries is not null)
         {
-            throw new Exception(ErrorMessages.IdFound(ModelType.Series));
+            throw new ApiException(ErrorMessages.IdFound(ModelType.Series));
         }
         var series = new Series()
         {

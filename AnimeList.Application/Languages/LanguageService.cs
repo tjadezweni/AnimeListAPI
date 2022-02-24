@@ -23,7 +23,7 @@ public class LanguageService : ILanguageService
         var existingLanguage = await unitOfWork.Studio.GetByIdAsync(newStudio.Id);
         if (existingLanguage is not null)
         {
-            throw new Exception(ErrorMessages.IdFound(ModelType.Studio));
+            throw new ApiException(ErrorMessages.IdFound(ModelType.Studio));
         }
         var language = new Language()
         {

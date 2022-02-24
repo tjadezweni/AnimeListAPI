@@ -20,6 +20,11 @@ public class MovieService : IMovieService
 
     public async Task<Movie> Create(Movie newMovie)
     {
+        var existingMovie = await unitOfWork.Movies.GetByIdAsync(newMovie.Id);
+        if (existingMovie is not null)
+        {
+            throw new ApiException(ErrorMessages.IdFound(ModelType.Movie));
+        }
         await unitOfWork.Movies.CreateAsync(newMovie);
         await unitOfWork.SaveAsync();
         return newMovie;

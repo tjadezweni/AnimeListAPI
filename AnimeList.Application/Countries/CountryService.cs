@@ -23,7 +23,7 @@ public class CountryService : ICountryService
         var existingCountry = await unitOfWork.Countries.GetByIdAsync(newCountry.Id);
         if (existingCountry is not null)
         {
-            throw new Exception(ErrorMessages.IdFound(ModelType.Country));
+            throw new ApiException(ErrorMessages.IdFound(ModelType.Country));
         }
         var country = new Country()
         {

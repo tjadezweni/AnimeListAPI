@@ -23,7 +23,7 @@ public class GenreService : IGenreService
         var existingStudio = await unitOfWork.Studio.GetByIdAsync(newGenre.Id);
         if (existingStudio is not null)
         {
-            throw new Exception(ErrorMessages.IdFound(ModelType.Studio));
+            throw new ApiException(ErrorMessages.IdFound(ModelType.Studio));
         }
         var genre = new Genre()
         {
