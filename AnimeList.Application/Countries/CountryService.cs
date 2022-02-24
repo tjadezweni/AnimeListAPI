@@ -20,19 +20,9 @@ public class CountryService : ICountryService
 
     public async Task<Country> Create(Country newCountry)
     {
-        var existingCountry = await unitOfWork.Countries.GetByIdAsync(newCountry.Id);
-        if (existingCountry is not null)
-        {
-            throw new ApiException(ErrorMessages.IdFound(ModelType.Country));
-        }
-        var country = new Country()
-        {
-            Id = newCountry.Id,
-            Name = newCountry.Name,
-        };
-        await unitOfWork.Countries.CreateAsync(country);
+        await unitOfWork.Countries.CreateAsync(newCountry);
         await unitOfWork.SaveAsync();
-        return country;
+        return newCountry;
     }
 
     public async Task Delete(int id)

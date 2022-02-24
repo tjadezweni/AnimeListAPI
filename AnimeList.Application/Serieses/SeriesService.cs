@@ -20,28 +20,33 @@ public class SeriesService : ISeriesService
 
     public async Task<Series> Create(Series newSeries)
     {
-        var existingSeries = await unitOfWork.Series.GetByIdAsync(newSeries.Id);
-        if (existingSeries is not null)
+        var genre = await unitOfWork.Genres.GetByIdAsync(newSeries.GenreId);
+        if (genre is null)
         {
-            throw new ApiException(ErrorMessages.IdFound(ModelType.Series));
+            throw new ApiException(ErrorMessages.IdNotFound(ModelType.Genre));
         }
-        var series = new Series()
+        var language = await unitOfWork.Languages.GetByIdAsync(newSeries.LanguageId);
+        if (language is null)
         {
-            Id = newSeries.Id,
-            Title = newSeries.Title,
-            Seasons = newSeries.Seasons,
-            Episodes = newSeries.Episodes,
-            IsCompleted = newSeries.IsCompleted,
-            YearStarted = newSeries.YearStarted,
-            YearEnded = newSeries.YearEnded,
-            GenreId = newSeries.GenreId,
-            CountryId = newSeries.CountryId,
-            LanguageId = newSeries.LanguageId,
-            StudioId = newSeries.StudioId,
-        };
-        await unitOfWork.Series.CreateAsync(series);
+            throw new ApiException(ErrorMessages.IdNotFound(ModelType.Language));
+        }
+        var country = await unitOfWork.Countries.GetByIdAsync(newSeries.CountryId);
+        if (country is null)
+        {
+            throw new ApiException(ErrorMessages.IdNotFound(ModelType.Country));
+        }
+        var studio = await unitOfWork.Studio.GetByIdAsync(newSeries.StudioId);
+        if (studio is null)
+        {
+            throw new ApiException(ErrorMessages.IdNotFound(ModelType.Studio));
+        }
+        newSeries.Genre = genre;
+        newSeries.Language = language;
+        newSeries.Country = country;
+        newSeries.Studio = studio;
+        await unitOfWork.Series.CreateAsync(newSeries);
         await unitOfWork.SaveAsync();
-        return series;
+        return newSeries;
     }
 
     public async Task Delete(int id)

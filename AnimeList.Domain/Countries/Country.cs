@@ -1,4 +1,5 @@
-﻿using AnimeList.Domain.Movies;
+﻿using AnimeList.Domain.Common;
+using AnimeList.Domain.Movies;
 using AnimeList.Domain.Serieses;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,13 @@ using System.Threading.Tasks;
 
 namespace AnimeList.Domain.Countries;
 
-public class Country
+public class Country : BaseEntity
 {
-    public int Id { get; set; }
-
     public string Name { get; set; } = null!;
+
+    [JsonIgnore]
+    public ICollection<Movie> Movies { get; set; } = new HashSet<Movie>();
+
+    [JsonIgnore]
+    public ICollection<Series> Series { get; set; } = new HashSet<Series>();
 }

@@ -18,21 +18,11 @@ public class LanguageService : ILanguageService
         this.unitOfWork = unitOfWork;
     }
 
-    public async Task<Language> Create(Language newStudio)
+    public async Task<Language> Create(Language newLanguage)
     {
-        var existingLanguage = await unitOfWork.Studio.GetByIdAsync(newStudio.Id);
-        if (existingLanguage is not null)
-        {
-            throw new ApiException(ErrorMessages.IdFound(ModelType.Studio));
-        }
-        var language = new Language()
-        {
-            Id = newStudio.Id,
-            Name = newStudio.Name
-        };
-        await unitOfWork.Languages.CreateAsync(language);
+        await unitOfWork.Languages.CreateAsync(newLanguage);
         await unitOfWork.SaveAsync();
-        return language;
+        return newLanguage;
     }
 
     public async Task Delete(int id)

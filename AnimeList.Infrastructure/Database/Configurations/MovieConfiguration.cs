@@ -31,25 +31,25 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
             .IsRequired();
 
         entityTypeBuilder.HasOne(entity => entity.Genre)
-            .WithMany()
+            .WithMany(referencedEntity => referencedEntity.Movies)
             .HasForeignKey(entity => entity.GenreId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         entityTypeBuilder.HasOne(entity => entity.Studio)
-            .WithMany()
+            .WithMany(referencedEntity => referencedEntity.Movies)
             .HasForeignKey(entity => entity.StudioId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         entityTypeBuilder.HasOne(entity => entity.Language)
-            .WithMany()
+            .WithMany(referencedEntity => referencedEntity.Movies)
             .HasForeignKey(entity => entity.LanguageId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         entityTypeBuilder.HasOne(entity => entity.Country)
-            .WithMany()
+            .WithMany(referencedEntity => referencedEntity.Movies)
             .HasForeignKey(entity => entity.CountryId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();

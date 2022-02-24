@@ -20,11 +20,30 @@ public class MovieService : IMovieService
 
     public async Task<Movie> Create(Movie newMovie)
     {
-        var existingMovie = await unitOfWork.Movies.GetByIdAsync(newMovie.Id);
-        if (existingMovie is not null)
+        var genre = await unitOfWork.Genres.GetByIdAsync(newMovie.GenreId);
+        if (genre is null)
         {
-            throw new ApiException(ErrorMessages.IdFound(ModelType.Movie));
+            throw new ApiException(ErrorMessages.IdNotFound(ModelType.Genre));
         }
+        var language = await unitOfWork.Languages.GetByIdAsync(newMovie.LanguageId);
+        if (language is null)
+        {
+            throw new ApiException(ErrorMessages.IdNotFound(ModelType.Language));
+        }
+        var country = await unitOfWork.Countries.GetByIdAsync(newMovie.CountryId);
+        if (country is null)
+        {
+            throw new ApiException(ErrorMessages.IdNotFound(ModelType.Country));
+        }
+        var studio = await unitOfWork.Studio.GetByIdAsync(newMovie.StudioId);
+        if (studio is null)
+        {
+            throw new ApiException(ErrorMessages.IdNotFound(ModelType.Studio));
+        }
+        newMovie.Genre = genre;
+        newMovie.Language = language;
+        newMovie.Country = country;
+        newMovie.Studio = studio;
         await unitOfWork.Movies.CreateAsync(newMovie);
         await unitOfWork.SaveAsync();
         return newMovie;

@@ -20,19 +20,9 @@ public class GenreService : IGenreService
 
     public async Task<Genre> Create(Genre newGenre)
     {
-        var existingStudio = await unitOfWork.Studio.GetByIdAsync(newGenre.Id);
-        if (existingStudio is not null)
-        {
-            throw new ApiException(ErrorMessages.IdFound(ModelType.Studio));
-        }
-        var genre = new Genre()
-        {
-            Id = newGenre.Id,
-            Name = newGenre.Name,
-        };
-        await unitOfWork.Genres.CreateAsync(genre);
+        await unitOfWork.Genres.CreateAsync(newGenre);
         await unitOfWork.SaveAsync();
-        return genre;
+        return newGenre;
     }
 
     public async Task Delete(int id)

@@ -20,19 +20,9 @@ public class StudioService : IStudioService
 
     public async Task<Studio> Create(Studio newStudio)
     {
-        var existingStudio = await unitOfWork.Studio.GetByIdAsync(newStudio.Id);
-        if (existingStudio is not null)
-        {
-            throw new ApiException(ErrorMessages.IdFound(ModelType.Studio));
-        }
-        var studio = new Studio()
-        {
-            Id = newStudio.Id,
-            Name = newStudio.Name,
-        };
-        await unitOfWork.Studio.CreateAsync(studio);
+        await unitOfWork.Studio.CreateAsync(newStudio);
         await unitOfWork.SaveAsync();
-        return studio;
+        return newStudio;
     }
 
     public async Task Delete(int id)

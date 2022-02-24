@@ -7,13 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnimeList.Domain.Common;
 
 namespace AnimeList.Domain.Movies;
 
-public class Movie
+public class Movie : BaseEntity
 {
-    public int Id { get; set; }
-
     public string Title { get; set; } = null!;
 
     public string Description { get; set; } = null!;

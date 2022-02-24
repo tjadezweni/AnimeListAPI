@@ -7,13 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
+using AnimeList.Domain.Common;
 
 namespace AnimeList.Domain.Serieses;
 
-public class Series
+public class Series : BaseEntity
 {
-    public int Id { get; set; }
-
     public string Title { get; set; } = null!;
 
     public string Description { get; set; } = null!;
@@ -30,17 +30,17 @@ public class Series
 
     public int GenreId { get; set; }
 
-    public virtual Genre Genre { get; set; } = null!;
+    public Genre Genre { get; set; } = null!;
 
     public int StudioId { get; set; }
 
-    public virtual Studio Studio { get; set; } = null!;
+    public Studio Studio { get; set; } = null!;
 
     public int LanguageId { get; set; }
 
-    public virtual Language Language { get; set; } = null!;
+    public Language Language { get; set; } = null!;
 
     public int CountryId { get; set; }
 
-    public virtual Country Country { get; set; } = null!;
+    public Country Country { get; set; } = null!;
 }

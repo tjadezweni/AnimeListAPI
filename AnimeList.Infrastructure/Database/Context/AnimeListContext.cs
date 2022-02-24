@@ -37,6 +37,6 @@ public sealed class AnimeListContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.ApplyConfigurationsFromAssembly(typeof(AnimeListContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AnimeListContext).Assembly);
     }
 }
