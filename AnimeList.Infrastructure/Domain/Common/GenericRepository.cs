@@ -26,20 +26,17 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity>
     public async Task CreateAsync(TEntity entity)
     {
         await dbSet.AddAsync(entity);
-        await dataContext.SaveChangesAsync();
     }
 
     public async Task CreateRangeAsync(TEntity entities)
     {
         await dbSet.AddRangeAsync(entities);
-        await dataContext.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id)
     {
         var entity = await dbSet.FindAsync(id);
         dbSet.Remove(entity!);
-        await dataContext.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<TEntity>> GetAsync(
@@ -71,6 +68,5 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity>
     public async Task UpdateAsync(TEntity entityToUpdate)
     {
         dbSet.Update(entityToUpdate);
-        await dataContext.SaveChangesAsync();
     }
 }

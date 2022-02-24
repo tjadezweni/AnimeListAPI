@@ -38,7 +38,7 @@ public class UnitOfWork : IUnitOfWork
         ISeriesRepository seriesRepository,
         IStudioRepository studioRepository)
     {
-        context = context ?? throw new ArgumentNullException(nameof(context));
+        this.context = context ?? throw new ArgumentNullException(nameof(context));
         Countries = countryRepository;
         Genres = genreRepository;
         Languages = languageRepository;
