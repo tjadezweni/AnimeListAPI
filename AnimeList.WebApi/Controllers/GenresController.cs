@@ -2,7 +2,6 @@
 using AnimeList.Domain.Genres;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AnimeList.WebApi.Controllers;
 [Route("api/[controller]")]
@@ -16,7 +15,6 @@ public class GenresController : ControllerBase
         this.genreService = genreService;
     }
 
-    // GET: api/<SeriesController>/1
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Genre), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -35,7 +33,6 @@ public class GenresController : ControllerBase
         return Ok(genresList);
     }
 
-    // POST api/<SeriesController>
     [HttpPost]
     [ProducesResponseType(typeof(Genre), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -45,7 +42,6 @@ public class GenresController : ControllerBase
         return Created("", newGenre);
     }
 
-    // PUT api/<SeriesController>/5
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Genre), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -56,7 +52,6 @@ public class GenresController : ControllerBase
         return Ok(updatedGenre);
     }
 
-    // DELETE api/<SeriesController>/5
     [HttpDelete("{id}")]
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)

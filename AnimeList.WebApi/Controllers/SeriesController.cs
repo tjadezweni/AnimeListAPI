@@ -4,7 +4,6 @@ using AnimeList.Domain.Serieses;
 using AnimeList.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AnimeList.WebApi.Controllers;
 
@@ -19,7 +18,6 @@ public class SeriesController : ControllerBase
         this.seriesService = seriesService;
     }
 
-    // GET: api/<SeriesController>/1
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Series), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,7 +36,6 @@ public class SeriesController : ControllerBase
         return Ok(seriesList);
     }
 
-    // POST api/<SeriesController>
     [HttpPost]
     [ProducesResponseType(typeof(Series), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -48,7 +45,6 @@ public class SeriesController : ControllerBase
         return Created("", newSeries);
     }
 
-    // PUT api/<SeriesController>/5
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Series), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,7 +55,6 @@ public class SeriesController : ControllerBase
         return Ok(updatedSeries);
     }
 
-    // DELETE api/<SeriesController>/5
     [HttpDelete("{id}")]
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)

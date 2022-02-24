@@ -2,7 +2,6 @@
 using AnimeList.Domain.Countries;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AnimeList.WebApi.Controllers;
 
@@ -17,7 +16,6 @@ public class CountriesController : ControllerBase
         this.countryService = countryService;
     }
 
-    // GET: api/<CountriesController>
     [HttpGet]
     [ProducesResponseType(typeof(Country), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -27,7 +25,6 @@ public class CountriesController : ControllerBase
         return Ok(countriesList);
     }
 
-    // GET api/<CountriesController>/5
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
@@ -35,7 +32,6 @@ public class CountriesController : ControllerBase
         return Ok(country);
     }
 
-    // POST api/<CountriesController>
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Country newCountry)
     {
@@ -43,7 +39,6 @@ public class CountriesController : ControllerBase
         return Ok(newCountry);
     }
 
-    // PUT api/<CountriesController>/5
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Country), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -54,7 +49,6 @@ public class CountriesController : ControllerBase
         return Ok(updatedCountry);
     }
 
-    // DELETE api/<CountriesController>/5
     [HttpDelete("{id}")]
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)

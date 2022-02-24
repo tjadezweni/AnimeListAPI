@@ -15,7 +15,6 @@ public class LanguagesController : ControllerBase
         this.languageService = languageService;
     }
 
-    // GET: api/<SeriesController>/1
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Language), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -34,7 +33,6 @@ public class LanguagesController : ControllerBase
         return Ok(languagesList);
     }
 
-    // POST api/<SeriesController>
     [HttpPost]
     [ProducesResponseType(typeof(Language), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -44,7 +42,6 @@ public class LanguagesController : ControllerBase
         return Created("", newLanguage);
     }
 
-    // PUT api/<SeriesController>/5
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Language), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -55,7 +52,6 @@ public class LanguagesController : ControllerBase
         return Ok(updatedLanguage);
     }
 
-    // DELETE api/<SeriesController>/5
     [HttpDelete("{id}")]
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)

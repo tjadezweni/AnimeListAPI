@@ -15,7 +15,6 @@ public class MoviesController : ControllerBase
         this.movieService = movieService;
     }
 
-    // GET: api/<SeriesController>/1
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Movie), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -34,7 +33,6 @@ public class MoviesController : ControllerBase
         return Ok(moviesList);
     }
 
-    // POST api/<SeriesController>
     [HttpPost]
     [ProducesResponseType(typeof(Movie), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -44,7 +42,6 @@ public class MoviesController : ControllerBase
         return Created("", newMovie);
     }
 
-    // PUT api/<SeriesController>/5
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Movie), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -55,7 +52,6 @@ public class MoviesController : ControllerBase
         return Ok(updatedMovie);
     }
 
-    // DELETE api/<SeriesController>/5
     [HttpDelete("{id}")]
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)

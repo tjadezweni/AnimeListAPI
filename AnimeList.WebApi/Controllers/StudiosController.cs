@@ -3,7 +3,6 @@ using AnimeList.Domain.Helpers;
 using AnimeList.Domain.Studios;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AnimeList.WebApi.Controllers;
 [Route("api/[controller]")]
@@ -17,7 +16,6 @@ public class StudiosController : ControllerBase
         this.studioService = studiosService;
     }
 
-    // GET: api/<SeriesController>/1
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Studio), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -36,7 +34,6 @@ public class StudiosController : ControllerBase
         return Ok(studiosList);
     }
 
-    // POST api/<SeriesController>
     [HttpPost]
     [ProducesResponseType(typeof(Studio), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -46,7 +43,6 @@ public class StudiosController : ControllerBase
         return Created("", newStudio);
     }
 
-    // PUT api/<SeriesController>/5
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Studio), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -57,7 +53,6 @@ public class StudiosController : ControllerBase
         return Ok(updatedStudio);
     }
 
-    // DELETE api/<SeriesController>/5
     [HttpDelete("{id}")]
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)
