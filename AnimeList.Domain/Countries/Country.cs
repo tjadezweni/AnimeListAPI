@@ -19,4 +19,9 @@ public class Country : BaseEntity
 
     [JsonIgnore]
     public ICollection<Series> Series { get; set; } = new HashSet<Series>();
+
+    public Country(string name)
+    {
+        Name = name;
+    }
 }

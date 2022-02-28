@@ -27,7 +27,7 @@ public class UnitOfWork : IUnitOfWork
 
     public ISeriesRepository Series { get; private set; }
 
-    public IStudioRepository Studio { get; private set; }
+    public IStudioRepository Studios { get; private set; }
 
     public UnitOfWork(
         AnimeListContext context,
@@ -44,7 +44,7 @@ public class UnitOfWork : IUnitOfWork
         Languages = languageRepository;
         Movies = movieRepository;
         Series = seriesRepository;
-        Studio = studioRepository;
+        Studios = studioRepository;
     }
 
     public async Task SaveAsync()

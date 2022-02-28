@@ -21,4 +21,10 @@ public class Genre : BaseEntity
 
     [JsonIgnore]
     public ICollection<Series> Series { get; set; } = new HashSet<Series>();
+
+    public Genre(string name, string description)
+    {
+        Name = name;
+        Description = description;
+    }
 }

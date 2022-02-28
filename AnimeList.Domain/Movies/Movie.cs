@@ -35,4 +35,22 @@ public class Movie : BaseEntity
 
     public Country? Country { get; set; } = null!;
 
+    public Movie(
+        string title, 
+        string description,
+        DateTime yearReleased,
+        int genreId,
+        int studioId,
+        int languageId,
+        int countryId)
+    {
+        Title = title;
+        Description = description;
+        YearReleased = yearReleased;
+        GenreId = genreId;
+        StudioId = studioId;
+        LanguageId = languageId;
+        CountryId = countryId;
+    }
+
 }

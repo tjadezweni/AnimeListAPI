@@ -1,5 +1,8 @@
 ﻿using AnimeList.Application.Genres;
+using AnimeList.Application.Genres.Commands;
+using AnimeList.Application.Genres.Queries;
 using AnimeList.Domain.Genres;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -8,47 +11,49 @@ namespace AnimeList.WebApi.Controllers;
 [ApiController]
 public class GenresController : ControllerBase
 {
-    private readonly IGenreService genreService;
+    private readonly IMediator _mediator;
 
-    public GenresController(IGenreService genreService)
+    public GenresController(IMediator mediator)
     {
-        this.genreService = genreService;
+        _mediator = mediator;
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Genre), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var genre = await genreService.GetById(id);
-        return Ok(genre);
+        var query = new GetGenreByIdQuery(id);
+        var genre = await _mediator.Send(query);
+        return genre is null ? NotFound() : Ok(genre);
     }
 
     [HttpGet]
     [ProducesResponseType(typeof(List<Genre>), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> GetAll()
     {
-        var genresList = await genreService.Get();
+        var query = new GetAllGenresQuery();
+        var genresList = await _mediator.Send(query);
         return Ok(genresList);
     }
 
     [HttpPost]
     [ProducesResponseType(typeof(Genre), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post([FromBody] Genre newGenre)
+    public async Task<IActionResult> Create([FromBody] CreateGenreCommand request)
     {
-        await genreService.Create(newGenre);
-        return Created("", newGenre);
+        var newGenre = await _mediator.Send(request);
+        return Created("GetById", newGenre);
     }
 
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Genre), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Put(int id, [FromBody] Genre updatedGenre)
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateGenreCommand request)
     {
-        updatedGenre.Id = id;
-        updatedGenre = await genreService.Update(updatedGenre);
+        request.Id = id;
+        var updatedGenre = await _mediator.Send(request);
         return Ok(updatedGenre);
     }
 
@@ -56,7 +61,8 @@ public class GenresController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)
     {
-        await genreService.Delete(id);
+        var query = new DeleteGenreCommand(id);
+        _ = await _mediator.Send(query);
         return NoContent();
     }
 }

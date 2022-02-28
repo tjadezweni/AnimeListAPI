@@ -1,5 +1,8 @@
 ﻿using AnimeList.Application.Movies;
+using AnimeList.Application.Movies.Commands;
+using AnimeList.Application.Movies.Queries;
 using AnimeList.Domain.Movies;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +11,11 @@ namespace AnimeList.WebApi.Controllers;
 [ApiController]
 public class MoviesController : ControllerBase
 {
-    private readonly IMovieService movieService;
+    private readonly IMediator _mediator;
 
-    public MoviesController(IMovieService movieService)
+    public MoviesController(IMediator mediator)
     {
-        this.movieService = movieService;
+        _mediator = mediator;
     }
 
     [HttpGet("{id}")]
@@ -20,8 +23,9 @@ public class MoviesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Get(int id)
     {
-        var movie = await movieService.GetById(id);
-        return Ok(movie);
+        var query = new GetMovieByIdQuery(id);
+        var movie = await _mediator.Send(query);
+        return movie is null ? NotFound() : Ok(movie);
     }
 
     [HttpGet]
@@ -29,26 +33,27 @@ public class MoviesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Get()
     {
-        var moviesList = await movieService.Get();
+        var query = new GetAllMoviesQuery();
+        var moviesList = await _mediator.Send(query);
         return Ok(moviesList);
     }
 
     [HttpPost]
     [ProducesResponseType(typeof(Movie), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post([FromBody] Movie newMovie)
+    public async Task<IActionResult> Post([FromBody] CreateMovieCommand request)
     {
-        await movieService.Create(newMovie);
-        return Created("", newMovie);
+        var newMovie = await _mediator.Send(request);
+        return Created("GetById", newMovie);
     }
 
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Movie), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Put(int id, [FromBody] Movie updatedMovie)
+    public async Task<IActionResult> Put(int id, [FromBody] UpdateMovieCommand request)
     {
-        updatedMovie.Id = id;
-        updatedMovie = await movieService.Update(updatedMovie);
+        request.Id = id;
+        var updatedMovie = await _mediator.Send(request);
         return Ok(updatedMovie);
     }
 
@@ -56,7 +61,8 @@ public class MoviesController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)
     {
-        await movieService.Delete(id);
+        var query = new DeleteMovieCommand(id);
+        _ = await _mediator.Send(query);
         return NoContent();
     }
 }

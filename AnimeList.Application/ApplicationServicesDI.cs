@@ -4,10 +4,12 @@ using AnimeList.Application.Languages;
 using AnimeList.Application.Movies;
 using AnimeList.Application.Serieses;
 using AnimeList.Application.Studios;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,13 +24,8 @@ public static class ApplicationServicesDI
             throw new ArgumentNullException(nameof(services));
         }
 
-        #region Services
-        services.AddScoped<IMovieService, MovieService>();
-        services.AddScoped<ICountryService, CountryService>();
-        services.AddScoped<IGenreService, GenreService>();
-        services.AddScoped<ILanguageService, LanguageService>();
-        services.AddScoped<ISeriesService, SeriesService>();
-        services.AddScoped<IStudioService, StudioService>();
+        #region Mediator
+        services.AddMediatR(Assembly.GetExecutingAssembly());
         #endregion
     }
 }

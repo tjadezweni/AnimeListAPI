@@ -1,6 +1,9 @@
 ﻿using AnimeList.Application.Studios;
+using AnimeList.Application.Studios.Commands;
+using AnimeList.Application.Studios.Queries;
 using AnimeList.Domain.Helpers;
 using AnimeList.Domain.Studios;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -9,47 +12,49 @@ namespace AnimeList.WebApi.Controllers;
 [ApiController]
 public class StudiosController : ControllerBase
 {
-    private readonly IStudioService studioService;
+    private readonly IMediator _mediator;
 
-    public StudiosController(IStudioService studiosService)
+    public StudiosController(IMediator mediator)
     {
-        this.studioService = studiosService;
+        _mediator = mediator;
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Studio), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var studio = await studioService.GetById(id);
-        return Ok(studio);
+        var query = new GetStudioByIdQuery(id);
+        var studio = await _mediator.Send(query);
+        return studio is null ? NotFound() : Ok(studio);
     }
 
     [HttpGet]
     [ProducesResponseType(typeof(List<Studio>), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> GetAll()
     {
-        var studiosList = await studioService.Get();
+        var query = new GetAllStudiosQuery();
+        var studiosList = await _mediator.Send(query);
         return Ok(studiosList);
     }
 
     [HttpPost]
     [ProducesResponseType(typeof(Studio), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post([FromBody] Studio newStudio)
+    public async Task<IActionResult> Create([FromBody] CreateStudioCommand request)
     {
-        await studioService.Create(newStudio);
-        return Created("", newStudio);
+        var newStudio = await _mediator.Send(request);
+        return Created("GetById", newStudio);
     }
 
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Studio), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Put(int id, [FromBody] Studio updatedStudio)
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateStudioCommand request)
     {
-        updatedStudio.Id = id;
-        updatedStudio = await studioService.Update(updatedStudio);
+        request.Id = id;
+        var updatedStudio = await _mediator.Send(request);
         return Ok(updatedStudio);
     }
 
@@ -57,7 +62,8 @@ public class StudiosController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)
     {
-        await studioService.Delete(id);
+        var query = new DeleteStudioCommand(id);
+        _ = await _mediator.Send(query);
         return NoContent();
     }
 }

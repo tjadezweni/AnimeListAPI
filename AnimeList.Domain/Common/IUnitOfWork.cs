@@ -20,7 +20,7 @@ public interface IUnitOfWork
     ILanguageRepository Languages { get; }
     IMovieRepository Movies { get; }
     ISeriesRepository Series { get; }
-    IStudioRepository Studio { get; }
+    IStudioRepository Studios { get; }
     #endregion
 
     Task SaveAsync();
