@@ -19,4 +19,9 @@ public class Language : BaseEntity
 
     [JsonIgnore]
     public ICollection<Series> Series { get; set; } = new HashSet<Series>();
+
+    public Language(string name)
+    {
+        Name = name;
+    }
 }

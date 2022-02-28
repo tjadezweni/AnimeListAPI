@@ -43,4 +43,21 @@ public class Series : BaseEntity
     public int CountryId { get; set; }
 
     public Country? Country { get; set; } = null!;
+
+    public Series(string title, string description, int seasons,
+        int episodes, bool isCompleted, DateTime yearStarted, DateTime yearEnded,
+        int genreId, int studioId, int languageId, int countryId)
+    {
+        Title = title;
+        Description = description;
+        Seasons = seasons;
+        Episodes = episodes;
+        IsCompleted = isCompleted;
+        YearStarted = yearStarted;
+        YearEnded = yearEnded;
+        GenreId = genreId;
+        StudioId = studioId;
+        LanguageId = languageId;
+        CountryId = countryId;
+    }
 }

@@ -1,5 +1,8 @@
 ﻿using AnimeList.Application.Countries;
+using AnimeList.Application.Countries.Commands;
+using AnimeList.Application.Countries.Queries;
 using AnimeList.Domain.Countries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -9,11 +12,11 @@ namespace AnimeList.WebApi.Controllers;
 [ApiController]
 public class CountriesController : ControllerBase
 {
-    private readonly ICountryService countryService;
+    private readonly IMediator _mediator;
 
-    public CountriesController(ICountryService countryService)
+    public CountriesController(IMediator mediator)
     {
-        this.countryService = countryService;
+        _mediator = mediator;
     }
 
     [HttpGet]
@@ -21,31 +24,38 @@ public class CountriesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Get()
     {
-        var countriesList = await countryService.Get();
-        return Ok(countriesList);
+        var query = new GetAllCountriesQuery();
+        var countries = await _mediator.Send(query);
+        return Ok(countries);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(int id)
+    [ProducesResponseType(typeof(List<Country>), 200)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetById(int id)
     {
-        var country = await countryService.GetById(id);
-        return Ok(country);
+        var query = new GetCountryByIdQuery(id);
+        var country = await _mediator.Send(query);
+        return country is null ? NotFound() : Ok(country);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Post([FromBody] Country newCountry)
+    [HttpPost("")]
+    [ProducesResponseType(typeof(Country), 201)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Post([FromBody] CreateCountryCommand request)
     {
-        newCountry = await countryService.Create(newCountry);
-        return Ok(newCountry);
+          
+        var newCountry = await _mediator.Send(request);
+        return Created("GetById", newCountry);
     }
 
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Country), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Put(int id, [FromBody] Country updatedCountry)
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateCountryCommand request)
     {
-        updatedCountry.Id = id;
-        updatedCountry = await countryService.Update(updatedCountry);
+        request.Id = id;
+        var updatedCountry = await _mediator.Send(request);
         return Ok(updatedCountry);
     }
 
@@ -53,7 +63,13 @@ public class CountriesController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)
     {
-        await countryService.Delete(id);
+        var query = new DeleteCountryCommand(id);
+        _ = await _mediator.Send(query);
         return NoContent();
     }
+}
+
+public class AddCountryDTO
+{
+    public int Id { get; set; }
 }

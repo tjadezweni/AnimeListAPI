@@ -19,4 +19,9 @@ public class Studio : BaseEntity
 
     [JsonIgnore]
     public ICollection<Series> Series { get; set; } = new HashSet<Series>();
+
+    public Studio(string name)
+    {
+        Name = name;
+    }
 }
