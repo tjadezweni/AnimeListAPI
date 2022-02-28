@@ -40,9 +40,9 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity>
     }
 
     public async Task<IEnumerable<TEntity>> GetAsync(
-        Expression<Func<TEntity, bool>> filter = null, 
+        Expression<Func<TEntity, bool>> filter = null!, 
         Func<IQueryable<TEntity>, 
-        IOrderedQueryable<TEntity>> orderBy = null)
+        IOrderedQueryable<TEntity>> orderBy = null!)
     {
         IQueryable<TEntity> query = dbSet;
         if (filter is not null)

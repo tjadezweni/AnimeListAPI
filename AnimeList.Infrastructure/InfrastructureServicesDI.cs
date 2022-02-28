@@ -35,9 +35,9 @@ public static class InfrastructureServicesDI
         }
 
         #region Context
-        services.AddDbContext<AnimeListContext>(options =>
+        services.AddDbContext<DbContext, AnimeListContext>(options =>
         {
-            options.UseInMemoryDatabase("AnimeList");
+            options.UseInMemoryDatabase("AnimeList_db");
         });
         #endregion
 

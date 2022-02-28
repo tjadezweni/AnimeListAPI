@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AnimeList.Infrastructure.Database.Context;
 
-public sealed class AnimeListContext : DbContext
+public class AnimeListContext : DbContext
 {
     #region Tables
     public DbSet<Country> Countries { get; set; } = null!;
@@ -32,11 +33,10 @@ public sealed class AnimeListContext : DbContext
     public AnimeListContext(DbContextOptions<AnimeListContext> options)
         : base(options)
     {
-        Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AnimeListContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
