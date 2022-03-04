@@ -1,7 +1,9 @@
-﻿using AnimeList.Application.Languages;
-using AnimeList.Application.Languages.Commands;
-using AnimeList.Application.Languages.Queries;
-using AnimeList.Domain.Languages;
+﻿using AnimeListAPI.Application.Commands.CreateLanguage;
+using AnimeListAPI.Application.Commands.DeleteLanguage;
+using AnimeListAPI.Application.Commands.UpdateLanguage;
+using AnimeListAPI.Application.Queries.GetAllLanguages;
+using AnimeListAPI.Application.Queries.GetLanguageById;
+using AnimeListAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +25,10 @@ public class LanguagesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetById(int id)
     {
-        var query = new GetLanguageByIdQuery(id);
+        var query = new GetLanguageByIdQuery()
+        {
+            Id = id
+        };
         var language = await _mediator.Send(query);
         return Ok(language);
     }
@@ -41,19 +46,26 @@ public class LanguagesController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Language), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] CreateLanguageCommand request)
+    public async Task<IActionResult> Create([FromBody] Language language)
     {
-        var newLanguage = await _mediator.Send(request);
+        var command = new CreateLanguageCommand()
+        {
+            Language = language
+        };
+        var newLanguage = await _mediator.Send(command);
         return Created("GetById", newLanguage);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     [ProducesResponseType(typeof(Language), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(int id, [FromBody] UpdateLanguageCommand request)
+    public async Task<IActionResult> Update([FromBody] Language language)
     {
-        request.Id = id;
-        var updatedLanguage = await _mediator.Send(request);
+        var command = new UpdateLanguageCommand()
+        {
+            Language = language
+        };
+        var updatedLanguage = await _mediator.Send(command);
         return Ok(updatedLanguage);
     }
 
@@ -61,7 +73,10 @@ public class LanguagesController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)
     {
-        var query = new DeleteLanguageCommand(id);
+        var query = new DeleteLanguageCommand()
+        {
+            Id = id
+        };
         _ = await _mediator.Send(query);
         return NoContent();
     }

@@ -1,8 +1,9 @@
-﻿using AnimeList.Application.Studios;
-using AnimeList.Application.Studios.Commands;
-using AnimeList.Application.Studios.Queries;
-using AnimeList.Domain.Helpers;
-using AnimeList.Domain.Studios;
+﻿using AnimeListAPI.Application.Commands.CreateStudio;
+using AnimeListAPI.Application.Commands.DeleteStudio;
+using AnimeListAPI.Application.Commands.UpdateStudio;
+using AnimeListAPI.Application.Queries.GetAllStudios;
+using AnimeListAPI.Application.Queries.GetStudioById;
+using AnimeListAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,10 @@ public class StudiosController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetById(int id)
     {
-        var query = new GetStudioByIdQuery(id);
+        var query = new GetStudioByIdQuery()
+        {
+            Id = id
+        };
         var studio = await _mediator.Send(query);
         return studio is null ? NotFound() : Ok(studio);
     }
@@ -42,19 +46,26 @@ public class StudiosController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Studio), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] CreateStudioCommand request)
+    public async Task<IActionResult> Create([FromBody] Studio studio)
     {
-        var newStudio = await _mediator.Send(request);
+        var command = new CreateStudioCommand()
+        {
+            Studio = studio
+        };
+        var newStudio = await _mediator.Send(command);
         return Created("GetById", newStudio);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     [ProducesResponseType(typeof(Studio), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(int id, [FromBody] UpdateStudioCommand request)
+    public async Task<IActionResult> Update([FromBody] Studio studio)
     {
-        request.Id = id;
-        var updatedStudio = await _mediator.Send(request);
+        var command = new UpdateStudioCommand()
+        {
+            Studio = studio
+        };
+        var updatedStudio = await _mediator.Send(command);
         return Ok(updatedStudio);
     }
 
@@ -62,7 +73,10 @@ public class StudiosController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)
     {
-        var query = new DeleteStudioCommand(id);
+        var query = new DeleteStudioCommand()
+        {
+            Id = id
+        };
         _ = await _mediator.Send(query);
         return NoContent();
     }

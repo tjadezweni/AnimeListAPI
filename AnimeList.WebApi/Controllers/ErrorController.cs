@@ -1,4 +1,4 @@
-﻿using AnimeList.Domain.Helpers;
+﻿using AnimeListAPI.Domain.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,22 +24,24 @@ public class ErrorController : ControllerBase
             var exception = context!.Error;
             var message = exception!.Message;
             var stackTrace = exception!.StackTrace;
+            var statusCode = StatusCodes.Status500InternalServerError;
 
             switch (exception)
             {
                 case ApiException:
                     logger.LogInformation($"{DateTime.UtcNow} : {message} : {stackTrace}");
+                    statusCode = StatusCodes.Status404NotFound;
                     break;
                 default:
-                    logger.LogError($"{DateTime.UtcNow} : {message} : {stackTrace}");
+                    logger.LogCritical($"{DateTime.UtcNow} : {message} : {stackTrace}");
                     break;
             }
-            return Problem(statusCode: 500, detail: "An error occurred");
+            return Problem(statusCode: statusCode, detail: "An error occurred");
         }
         catch (Exception exception)
         {
             logger.LogError($"{DateTime.UtcNow} : {exception.Message} : {exception.StackTrace}");
-            return Problem(statusCode: 500, detail: "An error occured");
+            return Problem(statusCode: StatusCodes.Status500InternalServerError, detail: "An error occured");
         }
     }
 }

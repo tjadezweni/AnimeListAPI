@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AnimeList.Application\AnimeList.Application.csproj" />
+    <ProjectReference Include="..\AnimeListAPI.Application\AnimeListAPI.Application.csproj" />
+    <ProjectReference Include="..\AnimeListAPI.Domain\AnimeListAPI.Domain.csproj" />
+    <ProjectReference Include="..\AnimeListAPI.Infrastructure\AnimeListAPI.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,9 @@
-﻿using AnimeList.Application.Genres;
-using AnimeList.Application.Genres.Commands;
-using AnimeList.Application.Genres.Queries;
-using AnimeList.Domain.Genres;
+﻿using AnimeListAPI.Application.Commands.CreateGenre;
+using AnimeListAPI.Application.Commands.DeleteGenre;
+using AnimeListAPI.Application.Commands.UpdateGenre;
+using AnimeListAPI.Application.Queries.GetAllGenres;
+using AnimeListAPI.Application.Queries.GetGenreById;
+using AnimeListAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +25,10 @@ public class GenresController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetById(int id)
     {
-        var query = new GetGenreByIdQuery(id);
+        var query = new GetGenreByIdQuery()
+        {
+            Id = id
+        };
         var genre = await _mediator.Send(query);
         return genre is null ? NotFound() : Ok(genre);
     }
@@ -41,19 +46,26 @@ public class GenresController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Genre), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] CreateGenreCommand request)
+    public async Task<IActionResult> Create([FromBody] Genre genre)
     {
-        var newGenre = await _mediator.Send(request);
+        var command = new CreateGenreCommand()
+        {
+            Genre = genre
+        };
+        var newGenre = await _mediator.Send(command);
         return Created("GetById", newGenre);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     [ProducesResponseType(typeof(Genre), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(int id, [FromBody] UpdateGenreCommand request)
+    public async Task<IActionResult> Update([FromBody] Genre genre)
     {
-        request.Id = id;
-        var updatedGenre = await _mediator.Send(request);
+        var command = new UpdateGenreCommand()
+        {
+            Genre = genre
+        };
+        var updatedGenre = await _mediator.Send(command);
         return Ok(updatedGenre);
     }
 
@@ -61,7 +73,10 @@ public class GenresController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)
     {
-        var query = new DeleteGenreCommand(id);
+        var query = new DeleteGenreCommand()
+        {
+            Id = id
+        };
         _ = await _mediator.Send(query);
         return NoContent();
     }

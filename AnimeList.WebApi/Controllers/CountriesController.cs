@@ -1,7 +1,9 @@
-﻿using AnimeList.Application.Countries;
-using AnimeList.Application.Countries.Commands;
-using AnimeList.Application.Countries.Queries;
-using AnimeList.Domain.Countries;
+﻿using AnimeListAPI.Application.Commands.CreateCountry;
+using AnimeListAPI.Application.Commands.DeleteCountry;
+using AnimeListAPI.Application.Commands.UpdateCountry;
+using AnimeListAPI.Application.Queries.GetAllCountries;
+using AnimeListAPI.Application.Queries.GetCountryById;
+using AnimeListAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,28 +36,37 @@ public class CountriesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetById(int id)
     {
-        var query = new GetCountryByIdQuery(id);
+        var query = new GetCountryByIdQuery()
+        {
+            Id = id
+        };
         var country = await _mediator.Send(query);
         return country is null ? NotFound() : Ok(country);
     }
 
-    [HttpPost("")]
+    [HttpPost]
     [ProducesResponseType(typeof(Country), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post([FromBody] CreateCountryCommand request)
+    public async Task<IActionResult> Post([FromBody] Country country)
     {
-          
-        var newCountry = await _mediator.Send(request);
+        var command = new CreateCountryCommand()
+        {
+            Country = country
+        };
+        var newCountry = await _mediator.Send(command);
         return Created("GetById", newCountry);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     [ProducesResponseType(typeof(Country), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(int id, [FromBody] UpdateCountryCommand request)
+    public async Task<IActionResult> Update([FromBody] Country country)
     {
-        request.Id = id;
-        var updatedCountry = await _mediator.Send(request);
+        var command = new UpdateCountryCommand()
+        {
+            country = country
+        };
+        var updatedCountry = await _mediator.Send(command);
         return Ok(updatedCountry);
     }
 
@@ -63,13 +74,11 @@ public class CountriesController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)
     {
-        var query = new DeleteCountryCommand(id);
+        var query = new DeleteCountryCommand()
+        {
+            Id = id
+        };
         _ = await _mediator.Send(query);
         return NoContent();
     }
-}
-
-public class AddCountryDTO
-{
-    public int Id { get; set; }
 }

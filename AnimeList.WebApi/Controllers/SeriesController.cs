@@ -1,9 +1,9 @@
-﻿using AnimeList.Application.Serieses;
-using AnimeList.Application.Serieses.Commands;
-using AnimeList.Application.Serieses.Queries;
-using AnimeList.Domain.Common;
-using AnimeList.Domain.Serieses;
-using AnimeList.WebApi.Controllers.Base;
+﻿using AnimeListAPI.Application.Commands.CreateSeries;
+using AnimeListAPI.Application.Commands.DeleteSeries;
+using AnimeListAPI.Application.Commands.UpdateSeries;
+using AnimeListAPI.Application.Queries.GetAllSeriesQuery;
+using AnimeListAPI.Application.Queries.GetSeriesById;
+using AnimeListAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +26,10 @@ public class SeriesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetById(int id)
     {
-        var query = new GetSeriesByIdQuery(id);
+        var query = new GetSeriesByIdQuery()
+        {
+            Id = id
+        };
         var series = await _mediator.Send(query);
         return series is null ? NotFound() : Ok(series);
     }
@@ -44,19 +47,26 @@ public class SeriesController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Series), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post([FromBody] CreateSeriesCommand request)
+    public async Task<IActionResult> Post([FromBody] Series series)
     {
-        var newSeries = await _mediator.Send(request);
+        var command = new CreateSeriesCommand()
+        {
+            Series = series
+        };
+        var newSeries = await _mediator.Send(command);
         return Created("GetById", newSeries);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     [ProducesResponseType(typeof(Series), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Put(int id, [FromBody] UpdateSeriesCommand request)
+    public async Task<IActionResult> Put([FromBody] Series series)
     {
-        request.Id = id;
-        var updatedSeries = await _mediator.Send(request);
+        var command = new UpdateSeriesCommand()
+        {
+            Series = series
+        };
+        var updatedSeries = await _mediator.Send(command);
         return Ok(updatedSeries);
     }
 
@@ -64,7 +74,10 @@ public class SeriesController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int id)
     {
-        var query = new DeleteSeriesCommand(id);
+        var query = new DeleteSeriesCommand()
+        {
+            Id = id
+        };
         _ = await _mediator.Send(query);
         return NoContent();
     }
