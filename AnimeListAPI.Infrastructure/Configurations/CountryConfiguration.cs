@@ -13,15 +13,7 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
 {
     public void Configure(EntityTypeBuilder<Country> builder)
     {
-        /*builder
-            .HasKey(entity => entity.Id);
-
         builder
-            .HasMany(m => m.Movies)
-            .WithOne(c => c.Country);
-
-        builder
-            .HasMany(s => s.Series)
-            .WithOne(c => c.Country);*/
+            .HasKey(entity => entity.CountryId);
     }
 }

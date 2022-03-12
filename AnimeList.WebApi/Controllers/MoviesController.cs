@@ -23,7 +23,7 @@ public class MoviesController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Movie), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> GetById(int id)
     {
         var query = new GetMovieByIdQuery()
         {
@@ -36,7 +36,7 @@ public class MoviesController : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(List<Movie>), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> GetAll()
     {
         var query = new GetAllMoviesQuery();
         var moviesList = await _mediator.Send(query);
@@ -46,7 +46,7 @@ public class MoviesController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Movie), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post([FromBody] Movie movie)
+    public async Task<IActionResult> Create([FromBody] Movie movie)
     {
         var command = new CreateMovieCommand()
         {
@@ -59,7 +59,7 @@ public class MoviesController : ControllerBase
     [HttpPut]
     [ProducesResponseType(typeof(Movie), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Put([FromBody] Movie movie)
+    public async Task<IActionResult> Update([FromBody] Movie movie)
     {
         var command = new UpdateMovieCommand()
         {

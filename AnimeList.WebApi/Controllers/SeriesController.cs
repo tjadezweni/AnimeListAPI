@@ -47,7 +47,7 @@ public class SeriesController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Series), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post([FromBody] Series series)
+    public async Task<IActionResult> Create([FromBody] Series series)
     {
         var command = new CreateSeriesCommand()
         {
@@ -60,7 +60,7 @@ public class SeriesController : ControllerBase
     [HttpPut]
     [ProducesResponseType(typeof(Series), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Put([FromBody] Series series)
+    public async Task<IActionResult> Update([FromBody] Series series)
     {
         var command = new UpdateSeriesCommand()
         {

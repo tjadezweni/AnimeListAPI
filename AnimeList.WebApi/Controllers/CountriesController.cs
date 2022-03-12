@@ -4,6 +4,7 @@ using AnimeListAPI.Application.Commands.UpdateCountry;
 using AnimeListAPI.Application.Queries.GetAllCountries;
 using AnimeListAPI.Application.Queries.GetCountryById;
 using AnimeListAPI.Domain.Entities;
+using AnimeListAPI.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,16 +16,18 @@ namespace AnimeList.WebApi.Controllers;
 public class CountriesController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly AnimeListAPIContext _context;
 
-    public CountriesController(IMediator mediator)
+    public CountriesController(IMediator mediator, AnimeListAPIContext context)
     {
         _mediator = mediator;
+        _context = context;
     }
 
     [HttpGet]
     [ProducesResponseType(typeof(Country), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> GetAll()
     {
         var query = new GetAllCountriesQuery();
         var countries = await _mediator.Send(query);
@@ -47,7 +50,7 @@ public class CountriesController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Country), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post([FromBody] Country country)
+    public async Task<IActionResult> Create([FromBody] Country country)
     {
         var command = new CreateCountryCommand()
         {

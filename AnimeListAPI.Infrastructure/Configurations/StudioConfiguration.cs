@@ -13,15 +13,7 @@ public class StudioConfiguration : IEntityTypeConfiguration<Studio>
 {
     public void Configure(EntityTypeBuilder<Studio> builder)
     {
-        /*builder
-            .HasKey(entity => entity.Id);
-
         builder
-            .HasMany(m => m.Movies)
-            .WithOne(s => s.Studio);
-
-        builder
-            .HasMany(s => s.Series)
-            .WithOne(s => s.Studio);*/
+            .HasKey(entity => entity.StudioId);
     }
 }

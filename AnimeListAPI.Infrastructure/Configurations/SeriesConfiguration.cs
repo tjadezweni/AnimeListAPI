@@ -13,27 +13,31 @@ public class SeriesConfiguration : IEntityTypeConfiguration<Series>
 {
     public void Configure(EntityTypeBuilder<Series> builder)
     {
-        /*builder
-            .HasKey(entity => entity.Id);
+        builder
+            .HasKey(entity => entity.SeriesId);
 
         builder
-            .HasOne(g => g.Genre)
-            .WithMany(s => s.Series)
-            .HasForeignKey(f => f.GenreId);
+            .HasOne(s => s.Genre)
+            .WithMany()
+            .HasForeignKey(s => s.GenreId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasOne(s => s.Studio)
-            .WithMany(s => s.Series)
-            .HasForeignKey(f => f.StudioId);
+            .WithMany()
+            .HasForeignKey(f => f.StudioId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
-            .HasOne(l => l.Language)
-            .WithMany(s => s.Series)
-            .HasForeignKey(f => f.LanguageId);
+            .HasOne(s => s.Country)
+            .WithMany()
+            .HasForeignKey(f => f.CountryId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
-            .HasOne(c => c.Country)
-            .WithMany(s => s.Series)
-            .HasForeignKey(f => f.CountryId);*/
+            .HasOne(s => s.Language)
+            .WithMany()
+            .HasForeignKey(f => f.LanguageId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

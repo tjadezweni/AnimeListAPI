@@ -36,7 +36,7 @@ public class ErrorController : ControllerBase
                     logger.LogCritical($"{DateTime.UtcNow} : {message} : {stackTrace}");
                     break;
             }
-            return Problem(statusCode: statusCode, detail: "An error occurred");
+            return Problem(statusCode: statusCode, detail: "An error occured when performing the request");
         }
         catch (Exception exception)
         {

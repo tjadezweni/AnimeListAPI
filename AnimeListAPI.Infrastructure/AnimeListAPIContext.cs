@@ -29,11 +29,11 @@ public class AnimeListAPIContext : DbContext
     public AnimeListAPIContext(DbContextOptions<AnimeListAPIContext> options)
         : base(options)
     {
+        Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-        //modelBuilder.ApplyConfigurationsFromAssembly(typeof(CountryConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CountryConfiguration).Assembly);
     }
 }

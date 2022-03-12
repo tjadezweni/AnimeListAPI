@@ -13,15 +13,7 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
 {
     public void Configure(EntityTypeBuilder<Genre> builder)
     {
-        /*builder
-            .HasKey(entity => entity.Id);
-
         builder
-            .HasMany(m => m.Movies)
-            .WithOne(g => g.Genre);
-
-        builder
-            .HasMany(s => s.Series)
-            .WithOne(g => g.Genre);*/
+            .HasKey(entity => entity.GenreId);
     }
 }

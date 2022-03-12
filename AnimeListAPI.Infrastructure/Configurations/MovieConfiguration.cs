@@ -13,27 +13,31 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 {
     public void Configure(EntityTypeBuilder<Movie> builder)
     {
-        /*builder
-            .HasKey(entity => entity.Id);
+        builder
+            .HasKey(entity => entity.MovieId);
 
         builder
-            .HasOne(g => g.Genre)
-            .WithMany(m => m.Movies)
-            .HasForeignKey(f => f.GenreId);
+            .HasOne(m => m.Genre)
+            .WithMany()
+            .HasForeignKey(f => f.GenreId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
-            .HasOne(s => s.Studio)
-            .WithMany(m => m.Movies)
-            .HasForeignKey(f => f.StudioId);
+            .HasOne(m => m.Studio)
+            .WithMany()
+            .HasForeignKey(f => f.StudioId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
-            .HasOne(l => l.Language)
-            .WithMany(m => m.Movies)
-            .HasForeignKey(f => f.LanguageId);
+            .HasOne(m => m.Language)
+            .WithMany()
+            .HasForeignKey(f => f.LanguageId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
-            .HasOne(c => c.Country)
-            .WithMany(m => m.Movies)
-            .HasForeignKey(f => f.CountryId);*/
+            .HasOne(m => m.Country)
+            .WithMany()
+            .HasForeignKey(f => f.CountryId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

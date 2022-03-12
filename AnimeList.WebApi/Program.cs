@@ -11,19 +11,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<AnimeListAPIContext>(options =>
 {
-    options.UseInMemoryDatabase("AnimeListDb");
+    options.UseSqlServer(connectionString);
 });
 
-builder.Services.AddTransient<ICountryRepository, CountryRepository>();
-builder.Services.AddTransient<IGenreRepository, GenreRepository>();
-builder.Services.AddTransient<ILanguageRepository, LanguageRepository>();
-builder.Services.AddTransient<IMovieRepository, MovieRepository>();
-builder.Services.AddTransient<ISeriesRepository, SeriesRepository>();
-builder.Services.AddTransient<IStudioRepository, StudioRepository>();
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
+builder.Services.AddScoped<IStudioRepository, StudioRepository>();
 
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddMediatR(typeof(GetAllCountriesQueryHandler).Assembly);
 
@@ -45,8 +47,6 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler("/error");
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 
