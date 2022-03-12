@@ -28,8 +28,15 @@ public class UpdateMovieCommandHandler : IRequestHandler<UpdateMovieCommand, Mov
             throw new MovieNotFoundException();
         }
         var movie = request.Movie;
-        await _unitOfWork._movieRepository.UpdateAsync(movie);
+        existingMovie.Title = movie.Title;
+        existingMovie.Description = movie.Description;
+        existingMovie.YearReleased = movie.YearReleased;
+        existingMovie.CountryId = movie.CountryId;
+        existingMovie.GenreId = movie.GenreId;
+        existingMovie.LanguageId = movie.LanguageId;
+        existingMovie.StudioId = movie.StudioId;
+        await _unitOfWork._movieRepository.UpdateAsync(existingMovie);
         await _unitOfWork.SaveAsync();
-        return movie;
+        return existingMovie;
     }
 }

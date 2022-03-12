@@ -28,8 +28,9 @@ public class UpdateStudioCommandHandler : IRequestHandler<UpdateStudioCommand, S
             throw new StudioNotFoundException();
         }
         var studio = request.Studio;
-        await _unitOfWork._studioRepository.UpdateAsync(studio);
+        existingStudio.Name = studio.Name;
+        await _unitOfWork._studioRepository.UpdateAsync(existingStudio);
         await _unitOfWork.SaveAsync();
-        return studio;
+        return existingStudio;
     }
 }

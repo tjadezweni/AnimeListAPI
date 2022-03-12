@@ -28,8 +28,10 @@ public class UpdateGenreCommandHandler : IRequestHandler<UpdateGenreCommand, Gen
         {
             throw new GenreNotFoundException();
         }
-        await _unitOfWork._genreRepository.UpdateAsync(genre);
+        existingGenre.Name = genre.Name;
+        existingGenre.Description = genre.Description;
+        await _unitOfWork._genreRepository.UpdateAsync(existingGenre);
         await _unitOfWork.SaveAsync();
-        return genre;
+        return existingGenre;
     }
 }

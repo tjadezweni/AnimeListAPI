@@ -28,8 +28,19 @@ public class UpdateSeriesCommandHandler : IRequestHandler<UpdateSeriesCommand, S
             throw new SeriesNotFoundException();
         }
         var series = request.Series;
-        await _unitOfWork._seriesRepository.UpdateAsync(series);
+        existingSeries.Title = series.Title;
+        existingSeries.Description = series.Description;
+        existingSeries.YearStarted = series.YearStarted;
+        existingSeries.YearEnded = series.YearEnded;
+        existingSeries.Seasons = series.Seasons;
+        existingSeries.Episodes = series.Episodes;
+        existingSeries.IsCompleted = series.IsCompleted;
+        existingSeries.GenreId = series.GenreId;
+        existingSeries.CountryId = series.CountryId;
+        existingSeries.LanguageId = series.LanguageId;
+        existingSeries.StudioId = series.StudioId;
+        await _unitOfWork._seriesRepository.UpdateAsync(existingSeries);
         await _unitOfWork.SaveAsync();
-        return series;
+        return existingSeries;
     }
 }

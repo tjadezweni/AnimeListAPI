@@ -28,8 +28,9 @@ public class UpdateLanguageCommandHandler : IRequestHandler<UpdateLanguageComman
             throw new LanguageNotFoundException();
         }
         var language = request.Language;
-        await _unitOfWork._languageRepository.UpdateAsync(language);
+        existingLanguage.Name = language.Name;
+        await _unitOfWork._languageRepository.UpdateAsync(existingLanguage);
         await _unitOfWork.SaveAsync();
-        return language;
+        return existingLanguage;
     }
 }

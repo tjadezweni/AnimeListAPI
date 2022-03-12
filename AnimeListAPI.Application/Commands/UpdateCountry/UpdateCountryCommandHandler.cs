@@ -27,8 +27,9 @@ public class UpdateCountryCommandHandler : IRequestHandler<UpdateCountryCommand,
         {
             throw new CountryNotFoundException();
         }
-        await _unitOfWork._countryRepository.UpdateAsync(request.country);
+        existingCountry.Name = request.country.Name;
+        await _unitOfWork._countryRepository.UpdateAsync(existingCountry);
         await _unitOfWork.SaveAsync();
-        return request.country;
+        return existingCountry;
     }
 }
