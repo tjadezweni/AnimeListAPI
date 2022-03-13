@@ -1,26 +1,34 @@
-using AnimeList.Application;
-using AnimeList.Application.Countries;
-using AnimeList.Application.Genres;
-using AnimeList.Application.Languages;
-using AnimeList.Application.Movies;
-using AnimeList.Application.Serieses;
-using AnimeList.Application.Studios;
-using AnimeList.Domain.Common;
-using AnimeList.Domain.Countries;
-using AnimeList.Domain.Genres;
-using AnimeList.Domain.Languages;
-using AnimeList.Domain.Movies;
-using AnimeList.Domain.Serieses;
-using AnimeList.Domain.Studios;
-using AnimeList.Infrastructure;
-using AnimeList.Infrastructure.Database.Context;
+using AnimeListAPI.Application.Queries.GetAllCountries;
+using AnimeListAPI.Domain.Interfaces;
+using AnimeListAPI.Domain.SeedWork;
+using AnimeListAPI.Infrastructure;
+using AnimeListAPI.Infrastructure.Repositories;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.RegisterInfrastructureServices();
-builder.Services.RegisterApplicationServices();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AnimeListAPIContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+});
+
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
+builder.Services.AddScoped<IStudioRepository, StudioRepository>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddMediatR(typeof(GetAllCountriesQueryHandler).Assembly);
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -39,8 +47,6 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler("/error");
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 
