@@ -5,12 +5,15 @@ using AnimeListAPI.Application.Queries.GetAllLanguages;
 using AnimeListAPI.Application.Queries.GetLanguageById;
 using AnimeListAPI.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnimeList.WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class LanguagesController : ControllerBase
 {
     private readonly IMediator _mediator;

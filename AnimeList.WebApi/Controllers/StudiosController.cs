@@ -5,12 +5,15 @@ using AnimeListAPI.Application.Queries.GetAllStudios;
 using AnimeListAPI.Application.Queries.GetStudioById;
 using AnimeListAPI.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace AnimeList.WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class StudiosController : ControllerBase
 {
     private readonly IMediator _mediator;

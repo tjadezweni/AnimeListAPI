@@ -5,6 +5,8 @@ using AnimeListAPI.Application.Queries.GetAllSeriesQuery;
 using AnimeListAPI.Application.Queries.GetSeriesById;
 using AnimeListAPI.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -12,6 +14,7 @@ namespace AnimeList.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class SeriesController : ControllerBase
 {
     private readonly IMediator _mediator;

@@ -1,10 +1,13 @@
 using AnimeListAPI.Application.Queries.GetAllCountries;
+using AnimeListAPI.Application.Security;
 using AnimeListAPI.Domain.Interfaces;
 using AnimeListAPI.Domain.SeedWork;
 using AnimeListAPI.Infrastructure;
 using AnimeListAPI.Infrastructure.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,12 +21,42 @@ builder.Services.AddDbContext<AnimeListAPIContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
+#region Jwt Security
+
+var bindJwtSettings = new JwtSettings();
+builder.Configuration.Bind("JsonWebTokenKeys", bindJwtSettings);
+builder.Services.AddSingleton(bindJwtSettings);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = bindJwtSettings.ValidateIssuerSigningKey,
+        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(bindJwtSettings.IssuerSigningKey)),
+        ValidateIssuer = bindJwtSettings.ValidateIssuer,
+        ValidIssuer = bindJwtSettings.ValidIssuer,
+        ValidateAudience = bindJwtSettings.ValidateAudience,
+        ValidAudience = bindJwtSettings.ValidAudience,
+        RequireExpirationTime = bindJwtSettings.RequiredExpirationTime,
+        ValidateLifetime = bindJwtSettings.RequiredExpirationTime,
+        ClockSkew = TimeSpan.FromDays(1)
+    };
+});
+
+#endregion
+
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
 builder.Services.AddScoped<IStudioRepository, StudioRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

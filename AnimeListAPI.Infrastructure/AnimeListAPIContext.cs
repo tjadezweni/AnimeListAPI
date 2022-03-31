@@ -24,6 +24,8 @@ public class AnimeListAPIContext : DbContext
     public DbSet<Series> Series { get; set; } = null!;
 
     public DbSet<Studio> Studios { get; set; } = null!;
+
+    public DbSet<User> Users { get; set; } = null!;
     #endregion
 
     public AnimeListAPIContext(DbContextOptions<AnimeListAPIContext> options)

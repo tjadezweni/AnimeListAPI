@@ -15,7 +15,7 @@ public interface IUnitOfWork
     public IMovieRepository _movieRepository { get; }
     public ISeriesRepository _seriesRepository { get; }
     public IStudioRepository _studioRepository { get; }
-
+    public IUserRepository _userRepository { get; }
 
     Task SaveAsync();
 }

@@ -5,12 +5,15 @@ using AnimeListAPI.Application.Queries.GetAllMovies;
 using AnimeListAPI.Application.Queries.GetMovieById;
 using AnimeListAPI.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnimeList.WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class MoviesController : ControllerBase
 {
     private readonly IMediator _mediator;

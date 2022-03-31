@@ -5,12 +5,15 @@ using AnimeListAPI.Application.Queries.GetAllGenres;
 using AnimeListAPI.Application.Queries.GetGenreById;
 using AnimeListAPI.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace AnimeList.WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class GenresController : ControllerBase
 {
     private readonly IMediator _mediator;
