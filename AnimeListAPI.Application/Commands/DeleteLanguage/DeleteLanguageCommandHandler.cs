@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AnimeListAPI.Application.Commands.DeleteLanguage;
 
-public class DeleteLanguageCommandHandler : IRequestHandler<DeleteLanguageCommand, int>
+public class DeleteLanguageCommandHandler : IRequestHandler<DeleteLanguageCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -18,7 +18,7 @@ public class DeleteLanguageCommandHandler : IRequestHandler<DeleteLanguageComman
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<int> Handle(DeleteLanguageCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteLanguageCommand request, CancellationToken cancellationToken)
     {
         var id = request.Id;
         var language = await _unitOfWork._languageRepository.GetAsync(language => language.LanguageId == id);
@@ -28,6 +28,6 @@ public class DeleteLanguageCommandHandler : IRequestHandler<DeleteLanguageComman
         }
         await _unitOfWork._languageRepository.DeleteAsync(language);
         await _unitOfWork.SaveAsync();
-        return id;
+        return Unit.Value;
     }
 }

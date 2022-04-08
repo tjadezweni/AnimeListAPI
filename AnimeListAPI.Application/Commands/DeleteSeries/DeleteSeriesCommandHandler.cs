@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AnimeListAPI.Application.Commands.DeleteSeries;
 
-public class DeleteSeriesCommandHandler : IRequestHandler<DeleteSeriesCommand, int>
+public class DeleteSeriesCommandHandler : IRequestHandler<DeleteSeriesCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -18,7 +18,7 @@ public class DeleteSeriesCommandHandler : IRequestHandler<DeleteSeriesCommand, i
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<int> Handle(DeleteSeriesCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteSeriesCommand request, CancellationToken cancellationToken)
     {
         var id = request.Id;
         var series = await _unitOfWork._seriesRepository.GetAsync(series => series.SeriesId == id);
@@ -28,6 +28,6 @@ public class DeleteSeriesCommandHandler : IRequestHandler<DeleteSeriesCommand, i
         }
         await _unitOfWork._seriesRepository.DeleteAsync(series);
         await _unitOfWork.SaveAsync();
-        return id;
+        return Unit.Value;
     }
 }

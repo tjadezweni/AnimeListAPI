@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AnimeListAPI.Application.Commands.DeleteCountry;
 
-public class DeleteCountryCommand : IRequest<int>
+public class DeleteCountryCommand : IRequest<Unit>
 {
     public int Id { get; set; }
 }

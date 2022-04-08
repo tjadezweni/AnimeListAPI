@@ -8,5 +8,5 @@ namespace AnimeListAPI.Domain.SeedWork;
 
 public record BaseEntity
 {
-
+    public bool IsDeleted { get; set; } = false;
 }

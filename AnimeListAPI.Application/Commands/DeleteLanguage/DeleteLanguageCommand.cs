@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AnimeListAPI.Application.Commands.DeleteLanguage;
 
-public class DeleteLanguageCommand : IRequest<int>
+public class DeleteLanguageCommand : IRequest<Unit>
 {
     public int Id { get; set; }
 }

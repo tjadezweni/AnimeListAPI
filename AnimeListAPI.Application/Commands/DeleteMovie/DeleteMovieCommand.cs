@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AnimeListAPI.Application.Commands.DeleteMovie;
 
-public class DeleteMovieCommand : IRequest<int>
+public class DeleteMovieCommand : IRequest<Unit>
 {
     public int Id { get; set; }
 }

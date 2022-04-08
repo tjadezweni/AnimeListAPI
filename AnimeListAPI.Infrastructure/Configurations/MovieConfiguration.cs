@@ -17,6 +17,9 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
             .HasKey(entity => entity.MovieId);
 
         builder
+            .HasQueryFilter(entity => !entity.IsDeleted);
+
+        builder
             .HasOne(m => m.Genre)
             .WithMany()
             .HasForeignKey(f => f.GenreId)

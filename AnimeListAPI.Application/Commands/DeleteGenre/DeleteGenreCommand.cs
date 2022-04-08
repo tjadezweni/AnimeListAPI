@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AnimeListAPI.Application.Commands.DeleteGenre;
 
-public class DeleteGenreCommand : IRequest<int>
+public class DeleteGenreCommand : IRequest<Unit>
 {
     public int Id { get; set; }
 }

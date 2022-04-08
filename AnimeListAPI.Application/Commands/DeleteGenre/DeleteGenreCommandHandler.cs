@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AnimeListAPI.Application.Commands.DeleteGenre;
 
-public class DeleteGenreCommandHandler : IRequestHandler<DeleteGenreCommand, int>
+public class DeleteGenreCommandHandler : IRequestHandler<DeleteGenreCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -18,7 +18,7 @@ public class DeleteGenreCommandHandler : IRequestHandler<DeleteGenreCommand, int
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<int> Handle(DeleteGenreCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteGenreCommand request, CancellationToken cancellationToken)
     {
         var id = request.Id;
         var genre = await _unitOfWork._genreRepository.GetAsync(genre => genre.GenreId == id);
@@ -28,6 +28,6 @@ public class DeleteGenreCommandHandler : IRequestHandler<DeleteGenreCommand, int
         }
         await _unitOfWork._genreRepository.DeleteAsync(genre);
         await _unitOfWork.SaveAsync();
-        return id;
+        return Unit.Value;
     }
 }

@@ -15,5 +15,8 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
     {
         builder
             .HasKey(entity => entity.CountryId);
+
+        builder
+            .HasQueryFilter(entity => !entity.IsDeleted);
     }
 }

@@ -27,7 +27,8 @@ public class BaseRepository<TEntity> : IAsyncRepository<TEntity>
 
     public async Task<bool> DeleteAsync(TEntity entity)
     {
-        _dbSet.Remove(entity);
+        entity.IsDeleted = true;
+        _dbSet.Update(entity);
         return await Task.FromResult(true);
     }
 

@@ -15,5 +15,8 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
     {
         builder
             .HasKey(entity => entity.GenreId);
+
+        builder
+            .HasQueryFilter(entity => !entity.IsDeleted);
     }
 }

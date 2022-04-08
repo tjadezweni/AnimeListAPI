@@ -15,5 +15,8 @@ public class StudioConfiguration : IEntityTypeConfiguration<Studio>
     {
         builder
             .HasKey(entity => entity.StudioId);
+
+        builder
+            .HasQueryFilter(entity => !entity.IsDeleted);
     }
 }

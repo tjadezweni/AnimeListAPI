@@ -17,6 +17,9 @@ public class SeriesConfiguration : IEntityTypeConfiguration<Series>
             .HasKey(entity => entity.SeriesId);
 
         builder
+            .HasQueryFilter(entity => !entity.IsDeleted);
+
+        builder
             .HasOne(s => s.Genre)
             .WithMany()
             .HasForeignKey(s => s.GenreId)

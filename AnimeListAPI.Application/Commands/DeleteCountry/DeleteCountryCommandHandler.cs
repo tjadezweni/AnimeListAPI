@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AnimeListAPI.Application.Commands.DeleteCountry;
 
-public class DeleteCountryCommandHandler : IRequestHandler<DeleteCountryCommand, int>
+public class DeleteCountryCommandHandler : IRequestHandler<DeleteCountryCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -18,7 +18,7 @@ public class DeleteCountryCommandHandler : IRequestHandler<DeleteCountryCommand,
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<int> Handle(DeleteCountryCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteCountryCommand request, CancellationToken cancellationToken)
     {
         var id = request.Id;
         var country = await _unitOfWork._countryRepository.GetAsync(country => country.CountryId == id);
@@ -28,6 +28,6 @@ public class DeleteCountryCommandHandler : IRequestHandler<DeleteCountryCommand,
         }
         await _unitOfWork._countryRepository.DeleteAsync(country);
         await _unitOfWork.SaveAsync();
-        return id;
+        return Unit.Value;
     }
 }

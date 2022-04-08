@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AnimeListAPI.Application.Commands.DeleteStudio;
 
-public class DeleteStudioCommandHandler : IRequestHandler<DeleteStudioCommand, int>
+public class DeleteStudioCommandHandler : IRequestHandler<DeleteStudioCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -18,7 +18,7 @@ public class DeleteStudioCommandHandler : IRequestHandler<DeleteStudioCommand, i
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<int> Handle(DeleteStudioCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteStudioCommand request, CancellationToken cancellationToken)
     {
         var id = request.Id;
         var existingStudio = await _unitOfWork._studioRepository.GetAsync(studio => studio.StudioId == id);
@@ -28,6 +28,6 @@ public class DeleteStudioCommandHandler : IRequestHandler<DeleteStudioCommand, i
         }
         await _unitOfWork._studioRepository.DeleteAsync(existingStudio);
         await _unitOfWork.SaveAsync();
-        return id;
+        return Unit.Value;
     }
 }

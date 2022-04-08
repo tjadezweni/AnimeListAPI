@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace AnimeListAPI.Infrastructure.Configurations;
 
-public class LanguageConfiguration : IEntityTypeConfiguration<Language>
+public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<Language> builder)
+    public void Configure(EntityTypeBuilder<User> builder)
     {
         builder
-            .HasKey(entity => entity.LanguageId);
+            .HasKey(entity => entity.UserId);
 
         builder
             .HasQueryFilter(entity => !entity.IsDeleted);
